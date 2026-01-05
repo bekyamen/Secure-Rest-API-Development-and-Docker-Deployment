@@ -1,0 +1,32 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16
+    container_name: customer-db
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: customers
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  app:
+    build: .
+    container_name: customer-app
+    restart: on-failure
+    environment:
+      DATABASE_URL: postgresql://user:password@db:5432/customers
+      JWT_SECRET: super_secret_key
+      PORT: 3000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    command: sh -c "npx prisma generate && node server.js"
+
+volumes:
+  db_data:

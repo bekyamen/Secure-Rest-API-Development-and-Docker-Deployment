@@ -1,0 +1,96 @@
+1️⃣ Build
+
+Purpose: Compile or prepare your application for testing and deployment.
+
+For Node.js + Docker:
+
+Install dependencies:
+
+npm install
+
+
+Compile TypeScript (if any) or transpile code. For pure JS, skip.
+
+Check that the app runs without syntax errors.
+
+Build the Docker image (optional for Docker pipelines):
+
+docker build -t customer-app .
+
+
+Result: A "ready-to-run" version of your app in memory or as a Docker image.
+
+2️⃣ Analyze
+
+Purpose: Inspect the code quality, detect bugs, security issues, or vulnerabilities before packaging.
+
+Typical steps:
+
+Linting: Check for code style issues
+
+npx eslint .
+
+
+Static analysis: Detect errors in code, type checking (if TS)
+
+Dependency scanning: Detect known vulnerabilities in npm packages
+
+npm audit
+
+
+Optional: Run test coverage report
+
+npm test
+
+
+Result: Code quality verified, security issues flagged. Deployment is safe.
+
+3️⃣ Package
+
+Purpose: Prepare your application as a distributable artifact for deployment.
+
+For Node.js apps:
+
+Zip the project (optional)
+
+Or build Docker image:
+
+docker build -t my-org/customer-management:latest .
+
+
+Include everything needed to run the app: code, dependencies, Prisma client, etc.
+
+Result: A deployable package (Docker image or tarball) that can be deployed anywhere.
+
+4️⃣ Deploy
+
+Purpose: Push your packaged app to the target environment (staging, production).
+
+Steps:
+
+Push Docker image to a registry (Docker Hub, GitHub Container Registry):
+
+docker tag customer-app my-org/customer-management:latest
+docker push my-org/customer-management:latest
+
+
+Deploy container to server, Kubernetes, or cloud service:
+
+docker run -d -p 3000:3000 --env-file .env my-org/customer-management:latest
+
+
+Optional: Run database migrations automatically before starting:
+
+npx prisma migrate deploy
+
+
+Validate deployment (health checks, smoke tests).
+
+Result: Application is live and running in the target environment.
+
+✅ Summary Table
+Stage	Purpose	Node/Docker Example
+Build	Prepare code & dependencies	npm install, Docker build
+Analyze	Code quality & security	eslint ., npm audit, tests
+Package	Create deployable artifact	Docker image, zip app, include Prisma client
+Deploy	Run app in target env	Docker run, Kubernetes, cloud deploy, migrate DB
