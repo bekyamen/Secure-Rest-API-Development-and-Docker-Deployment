@@ -1,0 +1,139 @@
+To kill a process in Linux, there are a few common commands depending on what info you have (PID, name, etc.):
+
+1️⃣ Kill by PID (Process ID)
+kill <PID>
+
+
+Example:
+
+kill 1234
+
+
+Sends the default SIGTERM signal (graceful stop).
+
+If the process doesn’t stop, force kill it with SIGKILL:
+
+kill -9 1234
+
+2️⃣ Kill by process name
+pkill <process_name>
+
+
+Example:
+
+pkill firefox
+
+
+This kills all processes with the name firefox.
+
+3️⃣ Kill by full command
+killall <process_name>
+
+
+
+
+
+
+
+
+
+1️⃣ Create a .tar archive
+tar -cvf archive_name.tar /path/to/files_or_directory
+
+
+c → create
+
+v → verbose (shows progress)
+
+f → filename
+
+Example:
+
+tar -cvf myfiles.tar /home/user/documents
+
+2️⃣ Create a .tar.gz (compressed) archive
+tar -czvf archive_name.tar.gz /path/to/files_or_directory
+
+
+z → gzip compression
+
+Example:
+
+tar -czvf myfiles.tar.gz /home/user/documents
+
+3️⃣ Extract a .tar or .tar.gz archive
+# Extract .tar
+tar -xvf archive_name.tar
+
+# Extract .tar.gz
+tar -xzvf archive_name.tar.gz
+
+
+x → extract
+
+
+
+
+
+
+
+Linux command or approach for a Threshold Alert — basically, monitoring a system resource (like CPU, memory, disk) and alerting when it crosses a limit. Linux doesn’t have a single “ThresholdAlert” command, but here’s how you can do it:
+
+1️⃣ CPU Usage Alert
+
+Check CPU and alert if it’s above 80%:
+
+CPU=$(top -bn1 | grep "Cpu(s)" | awk '{print $2 + $4}')
+THRESHOLD=80
+if (( $(echo "$CPU > $THRESHOLD" | bc -l) )); then
+    echo "CPU usage is above $THRESHOLD%: $CPU%"
+fi
+
+2️⃣ Memory Usage Alert
+
+Check memory and alert if above 90%:
+
+MEM=$(free | awk '/Mem/{printf("%.0f"), $3/$2*100}')
+THRESHOLD=90
+if [ $MEM -gt $THRESHOLD ]; then
+    echo "Memory usage is above $THRESHOLD%: $MEM%"
+fi
+
+3️⃣ Disk Usage Alert
+
+Check disk usage on / and alert if above 85%:
+
+DISK=$(df / | tail -1 | awk '{print $5}' | sed 's/%//')
+THRESHOLD=85
+if [ $DISK -gt $THRESHOLD ]; then
+    echo "Disk usage is above $THRESHOLD%: $DISK%"
+fi
+
+
+
+
+
+
+
+
+1️⃣ View a log file
+cat /var/log/syslog       # View entire log
+less /var/log/syslog      # Scrollable view
+tail -f /var/log/syslog   # Real-time log updates
+
+2️⃣ Filter logs using grep
+
+Search for a keyword:
+
+grep "ERROR" /var/log/syslog
+
+
+-i → ignore case
+
+-n → show line numbers
+
+-r → recursive search in directories
+
+Example:
+
+grep -i -n "failed login" /var/log/auth.log
