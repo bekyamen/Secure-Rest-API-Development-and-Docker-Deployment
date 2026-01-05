@@ -1,23 +1,21 @@
-# Use Node 24 LTS
-FROM node:24
+# Use stable Node LTS
+FROM node:20-alpine
 
 # Set working directory
 WORKDIR /app
 
-# Copy package files
+# Install dependencies first (better caching)
 COPY package*.json ./
-
-# Install dependencies
 RUN npm install
 
-# Copy the rest of the app
+# Copy rest of the app
 COPY . .
 
 # Generate Prisma client
 RUN npx prisma generate
 
-# Expose port
+# Expose app port
 EXPOSE 3000
 
-# Start the app
+# Start server
 CMD ["node", "server.js"]

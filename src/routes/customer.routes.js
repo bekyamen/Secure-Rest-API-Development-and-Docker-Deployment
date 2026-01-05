@@ -1,7 +1,15 @@
 import express from "express";
-import { createCustomer, getCustomers, updateCustomer, deleteCustomer } from "../controllers/customer.controller.js";
+import {
+  createCustomer,
+  getCustomers,
+  updateCustomer,
+  deleteCustomer,
+} from "../controllers/customer.controller.js";
+import { authMiddleware } from "../middleware/auth.middleware.js";
 
 const router = express.Router();
+
+router.use(authMiddleware);
 
 router.post("/", createCustomer);
 router.get("/", getCustomers);

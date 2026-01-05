@@ -18,8 +18,10 @@ export const getCustomers = async (req, res) => {
 
 // UPDATE
 export const updateCustomer = async (req, res) => {
+  const id = Number(req.params.id);
+
   const updated = await prisma.customer.updateMany({
-    where: { id: req.params.id, userId: req.user.id },
+    where: { id, userId: req.user.id },
     data: req.body,
   });
 
@@ -29,8 +31,10 @@ export const updateCustomer = async (req, res) => {
 
 // DELETE
 export const deleteCustomer = async (req, res) => {
+  const id = Number(req.params.id);
+
   const deleted = await prisma.customer.deleteMany({
-    where: { id: req.params.id, userId: req.user.id },
+    where: { id, userId: req.user.id },
   });
 
   if (!deleted.count) return res.status(403).json({ message: "Access denied" });
